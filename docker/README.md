@@ -42,5 +42,5 @@ mysql > show databases;
 
 
 # Docker-compose
-![wordpress.png](images/wordpress.png)
+![wordpress.png](images/ruby.png)
 
