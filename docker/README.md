@@ -38,9 +38,9 @@ mysql > show databases;
 ```
 
 # Dockerfile
-![wordpress.png](images/wordpress.png)
+![wordpress.png](images/ruby.png)  
 
 
 # Docker-compose
-![wordpress.png](images/ruby.png)  
+![wordpress.png](images/wordpress.png)  
 _Note_: .env file attached just for demonstration 
