@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: hello-world-deployment
+  namespace: my-app
+  labels:
+    app : hello-world-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels: 
+      app: hello-world-web
+  template:
+    metadata:
+      labels:
+        app: hello-world-web
+    spec:
+      containers:
+        - name: hello-world
+          image: crccheck/hello-world:latest
+          ports: 
+            - containerPort: 80 
+          resources:
+            limits:
+              memory: "64Mi"
+              cpu: "10m"
+            requests:
+              memory: "64Mi"
+              cpu: "10m"
