@@ -38,3 +38,4 @@ override.tf.json
 .terraformrc
 terraform.rc
 /2.2 Nginx/terraform/.terraform.lock.hcl
+/2.1 Linux/.vagrant/

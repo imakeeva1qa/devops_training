@@ -12,6 +12,8 @@ end
 ```
 
 Changing the port of the app and adding new vhost to the nginx site config:  
+**NOTE: the solution below may seem redundant, probably was better to change the port in _wp_options_ table to 80 and 
+it would work just fine.**
 ```bash
 sed -i -E 's/listen  80/listen  22080/' /etc/nginx/conf.d/test.site.conf
 cat << EOF >> /etc/nginx/conf.d/test.site.conf
