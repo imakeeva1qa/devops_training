@@ -6,6 +6,9 @@ Vagrant.configure("2") do |config|
   config.vm.box_version = "0.0.1"
   config.vm.network "forwarded_port", guest: 80, host: 80, id: "nginx"
   config.vm.network "forwarded_port", guest: 22080, host: 22080, id: "wordpress"
+  config.ssh.insert_key = false
+  config.ssh.keys_only = false
+  config.ssh.password = "vagrant"
 
   config.vm.provision "shell", path: "scripts/provision.sh"
 end
