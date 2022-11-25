@@ -1,0 +1,51 @@
+server {
+    listen  80;
+    server_name  proxy;
+
+    set $not_cached 1;
+        if ($request_uri ~* "htm_source") {
+            set $not_cached 0;
+    }
+
+
+    location / {
+        proxy_pass        http://127.0.0.1:8080;
+        proxy_set_header  Host              $host;
+        proxy_set_header  X-Real-IP         $remote_addr;
+        proxy_set_header  X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header  X-Forwarded-Host  $host;
+        proxy_set_header  X-Forwarded-Port  $server_port;
+
+        # cache goes here
+        proxy_cache        mycache;
+        proxy_cache_key    $scheme$host$request_uri;
+        proxy_no_cache     $not_cached;
+        proxy_cache_valid any 1h;
+        add_header X-Cache-Status $upstream_cache_status;
+
+    }
+}
+
+server {
+        listen  8080;
+        server_name  backend;
+        root  /var/www/html/wordpress;
+        index index.php index.html index.htm;
+
+        access_log /var/log/nginx/backend_access.log custom;
+        error_log /var/log/nginx/backend_error.log;
+
+        location / {
+            try_files $uri $uri/ /index.php;
+        }
+
+        location ~ \.php$ {
+            fastcgi_pass unix:/run/php/php8.1-fpm.sock;
+            fastcgi_index index.php;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            include /etc/nginx/fastcgi_params;
+        }
+        location ~ /\.ht {
+            deny all;
+        }
+}

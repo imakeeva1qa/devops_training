@@ -13,7 +13,7 @@ terraform {
 
 resource "aws_key_pair" "ssh-key" {
   key_name   = "ssh-key"
-  public_key = file("C:/Users/User/.ssh/id_rsa.pub")
+  public_key = file("~/.ssh/my_ssh_key.pub")
 }
 
 data "aws_ami" "ubuntu" {
@@ -32,6 +32,34 @@ resource "aws_instance" "nginx" {
   key_name               = "ssh-key"
   vpc_security_group_ids = [aws_security_group.nginx-sg.id]
   user_data              = file("scripts/provision.sh")
+
+  connection {
+    type = "ssh"
+    user = "ubuntu"
+    host = self.public_ip
+    private_key = file("~/.ssh/my_ssh_key")
+    timeout     = "1m"
+  }
+
+  provisioner "file" {
+    source      = "./scripts/db.sql"
+    destination = "/tmp/db.sql"
+  }
+
+  provisioner "file" {
+    source      = "./config/nginx-wordpress"
+    destination = "/tmp/nginx-wordpress"
+  }
+
+  provisioner "file" {
+    source      = "./config/wp-config.php"
+    destination = "/tmp/wp-config.php"
+  }
+
+  provisioner "file" {
+    source      = "./config/nginx.conf"
+    destination = "/tmp/nginx.conf"
+  }
 
   tags = {
     Name = "nginx"
