@@ -6,12 +6,17 @@ Vagrant.configure("2") do |config|
   config.vm.box_version = "0.0.1"
   config.vm.network "forwarded_port", guest: 80, host: 80, id: "nginx"
   config.vm.network "forwarded_port", guest: 22080, host: 22080, id: "wordpress"
+  config.ssh.insert_key = false
+  config.ssh.keys_only = false
+  config.ssh.password = "vagrant"
 
   config.vm.provision "shell", path: "scripts/provision.sh"
 end
 ```
 
 Changing the port of the app and adding new vhost to the nginx site config:  
+**NOTE: the solution below may seem redundant, probably was better to change the port in _wp_options_ table to 80 and 
+it would work just fine.**
 ```bash
 sed -i -E 's/listen  80/listen  22080/' /etc/nginx/conf.d/test.site.conf
 cat << EOF >> /etc/nginx/conf.d/test.site.conf
