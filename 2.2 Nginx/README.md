@@ -10,7 +10,7 @@ terraform apply
 ```
 
 2. Nignx proxy port: 80, nginx backend (virtual host) port 8080:
-![img.png](img.png)  
+![img.png](images/img.png)  
 ![img_1.png](images/img_1.png)  
 
 
