@@ -37,5 +37,5 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
-/2.2 Nginx/terraform/.terraform.lock.hcl
+.terraform.lock.hcl
 /2.1 Linux/.vagrant/
