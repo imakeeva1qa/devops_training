@@ -50,7 +50,9 @@ apt install python-is-python3 -y
 apt -y install ansible
 
 ## needs to install manually
+# install standard plugins and
 # ansible plugin
+# parameterized build plugin
 # add ssh-key for github
 # add ssh-key for web-server
 
