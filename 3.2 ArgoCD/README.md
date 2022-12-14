@@ -5,7 +5,7 @@ Bitnami/wordpress discards to work on M1 Silicon chip without any workarounds. S
 eksctl apply -f cluster.yaml
 ```
 
-### Application repository: [https://github.com/imakeeva1qa/helm-charts/tree/main/bitnami/wordpress](https://github.com/imakeeva1qa/helm-charts/tree/main/bitnami/wordpress)
+**Application repository:** [https://github.com/imakeeva1qa/helm-charts/tree/main/bitnami/wordpress](https://github.com/imakeeva1qa/helm-charts/tree/main/bitnami/wordpress)
 
 ## Misc - cluster adjustment
 By default, the cluster cannot process dynamic pvc provisioning. Used the following to fix this:  
@@ -80,8 +80,8 @@ argocd app create wordpress --repo https://github.com/imakeeva1qa/helm-charts.gi
 argocd app sync wordpress
 argocd app set wordpress --sync-policy automated    # autodeployment
 ```
-![img.png](images/wordpress.png)  
-![img.png](images/wordpress1.png)
+![img.png](images/cluster.png)  
+![img.png](images/wordpress.png)
 ![img.png](images/sync.png)
 
 ## Users
@@ -102,7 +102,7 @@ argocd account can-i sync applications 'wordpress/wordpress'
 argocd account can-i create applications '*/*'
 ```
 Output:   
-![img.png](images/user.png)  
+![img.png](images/account.png)  
 
 ## Telegram Notifications
 Create a tg bot and grab the api_token.  
@@ -125,4 +125,4 @@ Adding context and subscription
 kubectl patch cm argocd-notifications-cm -n argocd --type merge -p '{"data":{"context": "argocdUrl: https://16.170.224.39:31433","service.telegram": "token: $telegram-token"}}'
 kubectl patch app wordpress -n argocd -p '{"metadata": {"annotations": {"notifications.argoproj.io/subscribe.on-deployed.telegram": "-1001814261230","notifications.argoproj.io/subscribe.on-sync-failed.telegram": "-1001814261230","notifications.argoproj.io/subscribe.on-sync-running.telegram": "-1001814261230","notifications.argoproj.io/subscribe.on-sync-succeeded.telegram": "-1001814261230"}}}' --type merge
 ```
-![img.png](images/subscription.png)
+![img.png](images/chat-subscription2.png)
