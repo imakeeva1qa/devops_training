@@ -81,8 +81,8 @@ argocd app sync wordpress
 argocd app set wordpress --sync-policy automated    # autodeployment
 ```
 ![img.png](images/cluster.png)  
-![img.png](images/wordpress.png)
-![img.png](images/sync.png)
+![img.png](images/wordpress1.png)
+![img.png](images/sync1.png)
 
 ## Users
 
