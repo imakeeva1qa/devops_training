@@ -1,85 +1,128 @@
-bitnamy/wordpress discards to work on M1 Silicon chip without any workarounds. 
-so, eksctl apply -f cluster.yaml
+# ArgoCD
 
-kubectl create namespace argocd
-kubectl create namespace wordpress
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-
-kubectl patch svc argocd-server -n argocd --type='json' -p '[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":31433}]'
-
-pass
-kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
-psvcUBTdTQwodbgh
-
-install argocd cli
-brew  install argocd
-
-argocd login 16.170.224.39:31433 --insecure
-argocd cluster list
-```
-SERVER                          NAME        VERSION  STATUS      MESSAGE  PROJECT
-https://kubernetes.default.svc  in-cluster  1.23+    Successful  
+Bitnami/wordpress discards to work on M1 Silicon chip without any workarounds. So I ran it upon AWS EKS service  
+```bash
+eksctl apply -f cluster.yaml
 ```
 
----misc -- creation service account and csi driver
+### Application repository: [https://github.com/imakeeva1qa/helm-charts/tree/main/bitnami/wordpress](https://github.com/imakeeva1qa/helm-charts/tree/main/bitnami/wordpress)
+
+## Misc - cluster adjustment
+By default, the cluster cannot process dynamic pvc provisioning. Used the following to fix this:  
+Creation service account and csi driver. Link [https://docs.bitnami.com/kubernetes/faq/troubleshooting/troubleshooting-persistence-volumes/](https://docs.bitnami.com/kubernetes/faq/troubleshooting/troubleshooting-persistence-volumes/)  
+```bash
+# Identity provider. Pick your region and cluster
 eksctl utils associate-iam-oidc-provider --region=eu-north-1 --cluster=argocd-cluster --approve
-
-eksctl create iamserviceaccount \
---name ebs-csi-controller-sa \
---namespace kube-system \
---cluster argocd-cluster \
---attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy \
---approve \
---role-only \
---role-name AmazonEKS_EBS_CSI_DriverRole \
---override-existing-serviceaccounts
-
-kubectl annotate serviceaccount ebs-csi-controller-sa \
--n kube-system \
-eks.amazonaws.com/role-arn=arn:aws-cn:iam::111122223333:role/AmazonEKS_EBS_CSI_DriverRole
-
-kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.13"
-
-
+```
 
 ```bash
+# Associate cluster with service account
+eksctl create iamserviceaccount \
+        --name ebs-csi-controller-sa \
+        --namespace kube-system \
+        --cluster argocd-cluster \
+        --attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy \
+        --approve \
+        --role-only \
+        --role-name AmazonEKS_EBS_CSI_DriverRole \
+        --override-existing-serviceaccounts
+
+kubectl annotate serviceaccount ebs-csi-controller-sa \
+        -n kube-system \
+        eks.amazonaws.com/role-arn=arn:aws-cn:iam::<account_id>:role/AmazonEKS_EBS_CSI_DriverRole
+
+# deploy csi driver
+kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.13"
+```
+
+## ArgoCD deploying
+
+```bash
+kubectl create namespace argocd
+kubectl create namespace wordpress    # for further application deployment
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
+After the ArgoCD is deployed it can be exposed to work with the UI interface:  
+```bash
+# port is random (31433), pick any you like
+kubectl patch svc argocd-server -n argocd --type='json' -p '[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":31433}]'
+```
+_Note_: in case you want to access it by nodeport directly, add the inbound rule to the security group for the port above.  
+
+When the CD is ready, we can log in into it:  
+
+```bash
+# shows the temp admin pass:
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+```
+
+```bash
+# installing argocd cli for mac
+brew  install argocd
+```
+
+```bash
+# Login
+argocd login 16.170.224.39:31433 --insecure
+argocd cluster list
+
+# SERVER                          NAME        VERSION  STATUS      MESSAGE  PROJECT
+# https://kubernetes.default.svc  in-cluster  1.23+    Successful  
+```
+
+## Wordpress deploying
+
+```bash
+# using bitnami/wordpress
 argocd app create wordpress --repo https://github.com/imakeeva1qa/helm-charts.git --path bitnami/wordpress \
        --dest-server https://kubernetes.default.svc --dest-namespace wordpress 
-```
+       
 argocd app sync wordpress
+argocd app set wordpress --sync-policy automated    # autodeployment
+```
+![img.png](images/wordpress.png)  
+![img.png](images/wordpress1.png)
+![img.png](images/sync.png)
 
-argocd app set wordpress --sync-policy automated
+## Users
 
--- users
-
+```bash
+# applying policies
 kubectl apply -f argocd-cm.yml
+kubectl apply -f argocd-rbac.yml
 argocd account list
-```
-iharmakeyeu@Ihars-MacBook-Air 3.2 ArgoCD % argocd account list
-NAME    ENABLED  CAPABILITIES
-admin   true     login
-deploy  true     apiKey, login
 
-```
+# output:
+# NAME    ENABLED  CAPABILITIES
+# admin   true     login
+# deploy  true     apiKey, login
+
 argocd account can-i sync applications '*/*'
 argocd account can-i sync applications 'wordpress/wordpress'
 argocd account can-i create applications '*/*'
+```
+Output:   
+![img.png](images/user.png)  
 
--- tg
-Basic command installs v1.0.2 --# kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/notifications_catalog/install.yaml
-however it is not going to work with telegram, so do upgrade it explicitly :
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj-labs/argocd-notifications/v1.2.1/manifests/install.yaml
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj-labs/argocd-notifications/v1.2.1/catalog/install.yaml
-kubectl apply -f tg_secret.yaml
+## Telegram Notifications
+Create a tg bot and grab the api_token.  
+Create a channel, make the bot an admin, and post a message in there.  
+```bash
+# get the tg channel id. Should look like '-19928498324' or so
+curl https://api.telegram.org/bot<tg_token>/getUpdates
 
-adding context and subscription
+# grab official notifications_catalog
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/notifications_catalog/install.yaml
+
+# apply secrets with TG bot token
+kubectl apply -f tg_secret.yaml    
+```
+
+
+Adding context and subscription  
+```bash
+# put tg channel id into the last command below
 kubectl patch cm argocd-notifications-cm -n argocd --type merge -p '{"data":{"context": "argocdUrl: https://16.170.224.39:31433","service.telegram": "token: $telegram-token"}}'
 kubectl patch app wordpress -n argocd -p '{"metadata": {"annotations": {"notifications.argoproj.io/subscribe.on-deployed.telegram": "-1001814261230","notifications.argoproj.io/subscribe.on-sync-failed.telegram": "-1001814261230","notifications.argoproj.io/subscribe.on-sync-running.telegram": "-1001814261230","notifications.argoproj.io/subscribe.on-sync-succeeded.telegram": "-1001814261230"}}}' --type merge
-
-
-
-junk/
-kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "NodePort"},"ports": [{"port":8080,"protocol":"TCP","targetPort":8080,"nodePort":31433}]}'
-kubectl expose --type=NodePort deployment nginx-deployment --port 80 --name nginx-service  --overrides '{ "apiVersion": "v1","spec":{"ports": [{"port":80,"protocol
-":"TCP","targetPort":80,"nodePort":31433}]}}'
-kubectl port-forward svc/argocd-server -n argocd 8080:443
+```
+![img.png](images/subscription.png)
