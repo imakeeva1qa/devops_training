@@ -19,6 +19,9 @@ resource "aws_instance" "gitlab" {
   key_name               = "ssh-key"
   vpc_security_group_ids = [aws_security_group.gitlab-sg.id]
   user_data              = file("../provision/provision.sh")
+  lifecycle {
+    ignore_changes = [user_data]
+  }
   iam_instance_profile   = aws_iam_instance_profile.profile.name
 
   root_block_device {
@@ -48,7 +51,7 @@ resource "aws_security_group" "gitlab-sg" {
   name = "gitlab-sg"
 
   dynamic "ingress" {
-    for_each = ["80", "443", "22", "2224", "8081"]
+    for_each = ["80", "443", "22", "2224"]
     content {
       from_port   = ingress.value
       to_port     = ingress.value
@@ -57,6 +60,13 @@ resource "aws_security_group" "gitlab-sg" {
     }
   }
 
+  ingress {
+    description      = "nexus port"
+    from_port        = 8081
+    to_port          = 8081
+    protocol         = "tcp"
+    cidr_blocks      = ["172.31.0.0/16"]
+  }
 
   egress {
     from_port   = 0
