@@ -80,7 +80,7 @@ The next step is to add the project to SonarQube, it can be done just following 
 The project handles the following steps:
 1. Pushing changes to develop - triggers the pipeline with building, pushing artifacts to Nexus and deployment to DEV server 
 ![image_1](images/dev_commit_1.png)
-**_NOTE_**: I used the pipeline ID as the app version, which is not a best practice, however it was just convenient 
+**_NOTE_**: I used the pipeline ID as the app version and the same server for prod and dev, which is not a best practice, it was simply just convenient 
 to develop the project in such a way.
 ![image_2](images/nexus.png)
 
@@ -90,7 +90,7 @@ to develop the project in such a way.
 (however the last step should be triggered manually i.e. approved or so).  
 ![](images/prod_deploy_3.png)
 
-Deployment is just a pulling .jar file from Nexus repository and run the app (Hello World!).
+Deployment is just a pulling .jar file from Nexus repository and running the app (Hello World!).
 ![](images/prod_deploy_4.png)
 
 ![](images/sonarqube_report.png)
