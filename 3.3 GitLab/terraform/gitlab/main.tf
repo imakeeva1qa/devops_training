@@ -51,7 +51,7 @@ resource "aws_security_group" "gitlab-sg" {
   name = "gitlab-sg"
 
   dynamic "ingress" {
-    for_each = ["80", "443", "22", "2224"]
+    for_each = ["80", "443", "22", "2224", "9000"]
     content {
       from_port   = ingress.value
       to_port     = ingress.value

@@ -25,6 +25,14 @@ export GITLAB_HOME=/srv/gitlab
 docker compose -f /tmp/docker-compose-gitlab.yaml up -d
 docker compose -f /tmp/docker-compose-nexus.yaml up -d
 
+# sonarqube setup
+# some fixes for sonarqube
+sysctl -w vm.max_map_count=524288
+sysctl -w fs.file-max=131072
+ulimit -n 131072
+ulimit -u 8192
+docker compose -f /tmp/docker-compose-sonarqube.yaml up -d
+
 
 # AWS CLI
 apt install unzip -y
