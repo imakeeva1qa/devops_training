@@ -7,3 +7,4 @@ Repository for training
 4. [2.2 Nginx](2.2%20Nginx)
 5. [3.1 CICD](3.1%20CICD)
 6. [3.2 ArgoCD](3.2%20ArgoCD)
+7. [3.3 GitLab](3.3%20GitLab)
