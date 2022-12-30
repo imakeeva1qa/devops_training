@@ -22,6 +22,7 @@ variable "private_subnet_map" {
   type = map(number)
   default = {
     "eu-central-1a" = 3
+    "eu-central-1b" = 4
   }
 }
 

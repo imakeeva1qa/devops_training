@@ -17,19 +17,6 @@ resource "aws_instance" "server" {
   user_data              = file("../scripts/provision.sh")
   iam_instance_profile   = aws_iam_instance_profile.profile.name
 
-  #  connection {
-  #    type = "ssh"
-  #    user = "ubuntu"
-  #    host = self.public_ip
-  #    private_key = file("~/.ssh/my_ssh_key")
-  #    timeout     = "1m"
-  #  }
-  #
-  #  provisioner "file" {
-  #    source      = "../provision/"
-  #    destination = "/tmp"
-  #  }
-
   tags = {
     Name = "server-${var.project}-${each.value}"
   }

@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket = "rmshtc-tfstate-bucket-8837182"
-    key    = "elb/terraform.tfstate"
+    key    = "asg_elb/terraform.tfstate"
     region = "eu-west-1"
   }
 }
@@ -34,13 +34,6 @@ resource "aws_lb_target_group" "target-group" {
   }
 }
 
-resource "aws_lb_target_group_attachment" "target" {
-  for_each         = toset(data.terraform_remote_state.ec2.outputs.server_ids)
-  target_group_arn = aws_lb_target_group.target-group.arn
-  target_id        = each.value
-  port             = 80
-}
-
 resource "aws_lb_listener" "elb_listener" {
   load_balancer_arn = aws_lb.elb.arn
   port              = "80"
@@ -49,4 +42,9 @@ resource "aws_lb_listener" "elb_listener" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.target-group.arn
   }
+}
+
+resource "aws_autoscaling_attachment" "asg_attachment" {
+  autoscaling_group_name = aws_autoscaling_group.web.id
+  lb_target_group_arn    = aws_lb_target_group.target-group.arn
 }

@@ -9,3 +9,8 @@ variable "service_name" {
 variable "project" {
   default = "aws-basic"
 }
+
+variable bucket_list                         {
+  type = list(string)
+  default = ["deletemebucket-9919238777512"]
+}
