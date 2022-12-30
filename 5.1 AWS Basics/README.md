@@ -54,8 +54,6 @@ Added SG inbound rule 5432 -> source: web-sg
 
 * Memcached  
 
-![](images/inaccessible_directly.png)
-
 ![](images/memcached_connection.png)
 
 ![](images/memcached_connection_1.png)
