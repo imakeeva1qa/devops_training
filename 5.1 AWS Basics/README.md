@@ -46,27 +46,29 @@ Added SG inbound rule 5432 -> source: web-sg
    Created SG inbound rule 11211
 * Redis
 
-![](images/redis_summary.png)
-
 ![](images/redis_connection.png)
 
 ![](images/redis_connection_1.png)
 
-* Memcached
+![](images/redis_summary.png)
 
-![](images/memcached_summary.png)
+* Memcached  
+
+![](images/inaccessible_directly.png)
 
 ![](images/memcached_connection.png)
 
 ![](images/memcached_connection_1.png)
 
-8. Cloudfront Distribution
+![](images/memcached_summary.png)
 
-![](images/cloudfront_summary.png)
+8. Cloudfront Distribution
 
 ![](images/cloudfront_file.png)
 
 ![](images/cloudfront_image.png)
+
+![](images/cloudfront_summary.png)
 
 S3 rule:  
 
