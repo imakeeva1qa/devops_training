@@ -1,0 +1,55 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "volumes": [
+    {
+      "name": "nginx-proxy-conf",
+      "host": {
+        "sourcePath": "/var/app/current/config/nginx/conf.d"
+      }
+    },
+    {
+      "name": "app-sockets",
+      "host": {
+        "sourcePath": "/myapp/sockets"
+      }
+    }
+  ],
+  "containerDefinitions": [
+    {
+      "name": "rails-app",
+      "image": "public.ecr.aws/i9n7b3u5/myapp:latest",
+      "essential": true,
+      "memory": 256,
+      "mountPoints": [
+        {
+          "sourceVolume": "app-sockets",
+          "containerPath": "/myapp/tmp/sockets"
+        }
+      ]
+    },
+    {
+      "name": "nginx-proxy",
+      "image": "nginx",
+      "essential": true,
+      "memory": 128,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "mountPoints": [
+        {
+          "sourceVolume": "nginx-proxy-conf",
+          "containerPath": "/etc/nginx/conf.d",
+          "readOnly": true
+        },
+        {
+          "sourceVolume": "app-sockets",
+          "containerPath": "/myapp/tmp/sockets"
+        }
+      ]
+    }
+  ]
+}
+
