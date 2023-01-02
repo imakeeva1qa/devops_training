@@ -1,11 +1,12 @@
 # Dummy ruby app + nginx + ElasticBeanstalk
 
-The app doesn't do anything except showing a hello page.  
+The app doesn't do anything except showing a hello page.   
 
 1. Install ruby  
 ```bash
-# Using this tutorial
-# https://gorails.com/setup/ubuntu/22.04
+# Using these tutorials 
+# Sources: [https://medium.com/@t.skukx/deploying-rails-to-aws-elastic-beanstalk-using-gitlab-ci-77c7a98fbcc0]  
+#          [https://gorails.com/setup/ubuntu/22.04] 
 
 # Run 
 bundle exec puma -C config/puma.rb
