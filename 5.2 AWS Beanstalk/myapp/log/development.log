@@ -1,0 +1,93 @@
+Started GET "/" for 127.0.0.1 at 2023-01-02 17:10:01 +0000
+Processing by Rails::WelcomeController#index as */*
+  Rendering /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb (Duration: 1.4ms | Allocations: 603)
+Completed 200 OK in 8ms (Views: 4.8ms | Allocations: 3546)
+
+
+Started GET "/" for 127.0.0.1 at 2023-01-02 18:32:33 +0000
+Processing by Rails::WelcomeController#index as */*
+  Rendering /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb (Duration: 1.4ms | Allocations: 459)
+Completed 200 OK in 6ms (Views: 3.9ms | Allocations: 2239)
+
+
+Started GET "/" for 127.0.0.1 at 2023-01-02 18:33:08 +0000
+Processing by Rails::WelcomeController#index as */*
+  Rendering /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb (Duration: 1.5ms | Allocations: 459)
+Completed 200 OK in 6ms (Views: 4.0ms | Allocations: 2239)
+
+
+Started GET "/" for 127.0.0.1 at 2023-01-02 18:45:36 +0000
+Processing by Rails::WelcomeController#index as */*
+  Rendering /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb (Duration: 1.7ms | Allocations: 459)
+Completed 200 OK in 5ms (Views: 3.5ms | Allocations: 2239)
+
+
+Started GET "/" for 127.0.0.1 at 2023-01-02 18:45:47 +0000
+Processing by Rails::WelcomeController#index as */*
+  Rendering /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.6ms | Allocations: 257)
+Completed 200 OK in 2ms (Views: 1.3ms | Allocations: 808)
+
+
+Started GET "/" for 127.0.0.1 at 2023-01-02 18:49:46 +0000
+Processing by Rails::WelcomeController#index as */*
+  Rendering /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb (Duration: 1.5ms | Allocations: 459)
+Completed 200 OK in 6ms (Views: 4.3ms | Allocations: 2239)
+
+
+Started GET "/" for 127.0.0.1 at 2023-01-02 19:00:29 +0000
+Processing by Rails::WelcomeController#index as */*
+  Rendering /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb (Duration: 1.6ms | Allocations: 459)
+Completed 200 OK in 5ms (Views: 3.3ms | Allocations: 2239)
+
+
+Started GET "/" for 127.0.0.1 at 2023-01-02 19:09:03 +0000
+Processing by Rails::WelcomeController#index as */*
+  Rendering /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb (Duration: 2.0ms | Allocations: 459)
+Completed 200 OK in 6ms (Views: 3.6ms | Allocations: 2239)
+
+
+Started GET "/" for 127.0.0.1 at 2023-01-02 19:09:17 +0000
+Processing by Rails::WelcomeController#index as */*
+  Rendering /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.7ms | Allocations: 257)
+Completed 200 OK in 2ms (Views: 1.4ms | Allocations: 807)
+
+
+Started GET "/" for 127.0.0.1 at 2023-01-02 19:14:58 +0000
+Processing by Rails::WelcomeController#index as */*
+  Rendering /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.1ms | Allocations: 14)
+Completed 200 OK in 1ms (Views: 0.3ms | Allocations: 189)
+
+
+Started GET "/" for 77.222.239.91 at 2023-01-02 19:15:00 +0000
+Cannot render console from 77.222.239.91! Allowed networks: 127.0.0.0/127.255.255.255, ::1
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.1ms | Allocations: 14)
+Completed 200 OK in 1ms (Views: 0.3ms | Allocations: 225)
+
+
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked host: localhost
+Started GET "/" for 127.0.0.1 at 2023-01-02 19:35:55 +0000
+Processing by Rails::WelcomeController#index as */*
+  Rendering /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.3ms | Allocations: 13)
+Completed 200 OK in 1ms (Views: 1.2ms | Allocations: 186)
+
+
+Started GET "/" for 127.0.0.1 at 2023-01-02 19:37:27 +0000
+Processing by Rails::WelcomeController#index as */*
+  Rendering /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /root/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.4/lib/rails/templates/rails/welcome/index.html.erb (Duration: 1.6ms | Allocations: 459)
+Completed 200 OK in 7ms (Views: 4.7ms | Allocations: 2239)
+
+
