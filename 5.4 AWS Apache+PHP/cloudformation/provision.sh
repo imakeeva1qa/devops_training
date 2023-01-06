@@ -8,7 +8,7 @@ yum -y install git
 # get configs
 app_path="/var/www"
 wget https://raw.githubusercontent.com/imakeeva1qa/devops_training/main/5.4%20AWS%20Apache%2BPHP/config/wp-config.php -P /tmp/
-wget https://raw.githubusercontent.com/imakeeva1qa/devops_training/main/5.4%20AWS%20Apache%2BPHP/config/wordpress.conf -P /tmp/
+wget https://raw.githubusercontent.com/imakeeva1qa/devops_training/main/5.4%20AWS%20Apache%2BPHP/config/app.conf -P /tmp/
 wget https://raw.githubusercontent.com/imakeeva1qa/devops_training/main/5.4%20AWS%20Apache%2BPHP/cloudformation/db.sql -P /tmp/
 
 
@@ -79,14 +79,14 @@ systemctl restart httpd.service && systemctl restart php-fpm
 # wordpress config #
 mkdir /etc/httpd/sites-available /etc/httpd/sites-enabled
 echo "IncludeOptional sites-enabled/*.conf" >> /etc/httpd/conf/httpd.conf
-mv /tmp/wordpress.conf /etc/httpd/sites-available/wordpress.conf
+mv /tmp/app.conf /etc/httpd/sites-available/app.conf
 cp /tmp/wp-config.php ${app_path}/wordpress/wp-config.php
 
 chown -R apache:apache ${app_path}/wordpress
 find ${app_path}/wordpress/ -type d -exec chmod 750 {} \;
 find ${app_path}/wordpress/ -type f -exec chmod 640 {} \;
 
-ln -s /etc/httpd/sites-available/wordpress.conf /etc/httpd/sites-enabled/wordpress.conf
+ln -s /etc/httpd/sites-available/app.conf /etc/httpd/sites-enabled/app.conf
 
 # setsebool -P httpd_unified 1
 systemctl restart httpd.service && systemctl restart php-fpm
