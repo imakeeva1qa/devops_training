@@ -1,5 +1,29 @@
-al2022-ami
+# Cloudformation Apache+PHP+Wordpress+NodeJS+Gatsby
 
-Amazon Linux 2 includes Glibc 2.26 or under. To use a higher glibc version, you need to consider other AMI, for example Amazon Linux 2022 (al2022-ami) as it includes glibc 2.34.
+Upload /cloudformation/cf.yaml to Cloudformation service to create a stack or use aws cloudformation CLI.
 
-You can also revert back to Node.js 16 as it uses a lower version of Glibc.
+The Stack creates:  
+1. EC2 instance with provisioned stack Apache, NodeJS, PHP, Wordpress (/app1), Gatsby (hello world - /app2)
+2. ALB in the default subnets forwarding to the EC2 on port 80
+3. Security and target groups and alb listener
+
+## OUTPUTS:
+Stack initiation  
+
+![](images/1-stack.png)
+
+Output with public IP address  
+
+![](images/2-output.png)
+
+Output without public IP address  
+
+![](images/3-output.png)
+
+Wordpress  
+
+![](images/4-wordpress.png)
+
+Gatsby  
+
+![](images/5-gatsby.png)
