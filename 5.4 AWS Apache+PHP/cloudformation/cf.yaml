@@ -1,12 +1,4 @@
 Parameters:
-  UserData:
-    Type: String
-    Default:
-      Fn::Base64: !Sub |
-        #!/bin/bash 
-        wget https://raw.githubusercontent.com/imakeeva1qa/devops_training/main/5.4%20AWS%20Apache%2BPHP/cloudformation/provision.sh
-        chmod +x provision.sh
-        ./provision.sh
   KeyName:
     Description: ec2 key pair
     Type: AWS::EC2::KeyPair::KeyName
@@ -43,8 +35,12 @@ Resources:
           GroupSet:
             - !Ref Ec2SG
           SubnetId: subnet-01f96629aff291d23
-      #UserData:
-      #  - !Ref UserData
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          wget https://raw.githubusercontent.com/imakeeva1qa/devops_training/main/5.4%20AWS%20Apache%2BPHP/cloudformation/provision.sh
+          chmod +x provision.sh
+          ./provision.sh
       Tags:
         - Key: Name
           Value: !Ref Ec2InstanceName
@@ -53,12 +49,13 @@ Resources:
   AlbSG:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: ELB Security Group
+      GroupDescription: ALB Security Group
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 80
           ToPort: 80
           CidrIp: 0.0.0.0/0
+      VpcId: !Ref VPC
 
   Ec2SG:
     Type: AWS::EC2::SecurityGroup
@@ -96,7 +93,7 @@ Resources:
         - subnet-01f96629aff291d23
         - subnet-0c7f8785a02c52280
       SecurityGroups:
-        - !Ref Ec2SG
+        - !Ref AlbSG
       Tags:
         - Key: Name
           Value:
