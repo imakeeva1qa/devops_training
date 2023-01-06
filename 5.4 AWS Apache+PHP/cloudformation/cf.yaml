@@ -1,27 +1,56 @@
-AWSTemplateFormatVersion: 2010-09-09
-
 Parameters:
   UserData:
     Type: String
+    Default:
+      Fn::Base64: !Sub |
+        #!/bin/bash 
+        wget https://raw.githubusercontent.com/imakeeva1qa/devops_training/main/5.4%20AWS%20Apache%2BPHP/cloudformation/provision.sh
+        chmod +x provision.sh
+        ./provision.sh
   KeyName:
     Description: ec2 key pair
-    Type: 'AWS::EC2::KeyPair::KeyName'
+    Type: AWS::EC2::KeyPair::KeyName
+    Default: ssh-key
+  VPC:
+    Type: 'AWS::EC2::VPC::Id'
+    Default: vpc-0dadce953132343d4
+  PublicIp:
+    Type: String
+    Default: "true"
+    AllowedValues: ["true", "false"]
+  Ec2InstanceName:
+    Type: String
+    Default: ec2-apache-wordpress-gatsby
+
+Conditions:
+  PublicIPCondition: !Equals
+    - !Ref PublicIp
+    - 'true'
 
 Resources:
-  EC2Instance:
+  # ec2
+  Ec2Instance:
     Type: AWS::EC2::Instance
     Properties:
       AvailabilityZone: eu-north-1a
-      ImageId: ami-0233c2d874b811deb
-      InstanceType: t2.micro
-      SecurityGroups:
-        - !Ref EC2SecurityGroup
+      ImageId: ami-07bdb714a483cb3bc
+      InstanceType: t3.micro
       KeyName: !Ref KeyName
-      UserData:
-        - !Ref: UserData
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: !Ref PublicIp
+          DeleteOnTermination: 'true'
+          DeviceIndex: '0'
+          GroupSet:
+            - !Ref Ec2SG
+          SubnetId: subnet-01f96629aff291d23
+      #UserData:
+      #  - !Ref UserData
+      Tags:
+        - Key: Name
+          Value: !Ref Ec2InstanceName
 
-  # security group
-  ELBSecurityGroup:
+  # security groups
+  AlbSG:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: ELB Security Group
@@ -31,41 +60,49 @@ Resources:
           ToPort: 80
           CidrIp: 0.0.0.0/0
 
-  EC2SecurityGroup:
+  Ec2SG:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: !Ref SecurityGroupDescription
+      GroupDescription: EC2 Security Group
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 80
           ToPort: 80
           SourceSecurityGroupId:
             Fn::GetAtt:
-              - ELBSecurityGroup
+              - AlbSG
               - GroupId
+#        - IpProtocol: tcp
+#          FromPort: 9000
+#          ToPort: 9000
+#          SourceSecurityGroupId:
+#            Fn::GetAtt:
+#              - AlbSG
+#              - GroupId
         - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
           CidrIp: 0.0.0.0/0
+      VpcId: !Ref VPC
 
-  # Load Balancer for EC2
+  # Load balancer
   LoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
-      Name: ELB
+      Name: alb-apache-wordpress-gatsby
       Scheme: internet-facing
       Type: application
-      SecurityGroups:
-        - !Ref LoadBalancerSecurityGroup
       Subnets:
-        - !Ref PublicSubnetA
-        - !Ref PublicSubnetB
+        - subnet-01f96629aff291d23
+        - subnet-0c7f8785a02c52280
+      SecurityGroups:
+        - !Ref Ec2SG
       Tags:
         - Key: Name
           Value:
             !Join
             - ''
-            - - 'elb-'
+            - - 'alb-'
               - !Ref 'AWS::StackName'
 
   LoadBalancerListener:
@@ -76,28 +113,38 @@ Resources:
       Protocol: HTTP
       DefaultActions:
         - Type: forward
-          TargetGroupArn: !Ref DefaultTargetGroup
+          TargetGroupArn: !Ref MyTargetGroup
 
   MyTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     DependsOn:
       - LoadBalancer
     Properties:
-      HealthCheckEnabled: 'true'
+      HealthCheckEnabled: true
       HealthCheckPath: /
       HealthCheckPort: 80
       HealthCheckProtocol: HTTP
       Port: 80
       Protocol: HTTP
       Targets:
-        - Id: !Ref EC2Instance
+        - Id: !Ref Ec2Instance
           Port: 80
       TargetType: instance
       HealthCheckIntervalSeconds: '10'
-      HealthyThresholdCount: '2'
-      UnhealthyThresholdCount: '3'
-      HealthCheckTimeoutSeconds: '5'
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 2
+      HealthCheckTimeoutSeconds: 5
       VpcId: !Ref VPC
-      ServiceToken:
       Matcher:
         HttpCode: 200,302
+
+Outputs:
+  ALB:
+    Value: !Join
+      - ''
+      - - 'http://'
+        - !GetAtt
+          - LoadBalancer
+          - DNSName
+  PublicIp:
+    Value: !If [PublicIPCondition, !GetAtt Ec2Instance.PublicIp, 'Not Public']
