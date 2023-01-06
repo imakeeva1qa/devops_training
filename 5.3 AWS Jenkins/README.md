@@ -1,0 +1,1 @@
+Will be picked up at the end or skipped because quite a similar task was done within CICD part [https://github.com/imakeeva1qa/devops_training/tree/main/3.1%20CICD](https://github.com/imakeeva1qa/devops_training/tree/main/3.1%20CICD)
