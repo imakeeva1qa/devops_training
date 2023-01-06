@@ -9,6 +9,7 @@ The Stack creates:
 
 ## OUTPUTS:
 Stack initiation  
+**NOTE: the instance won't have internet access if PublicIp = false. To make it work it needs to place the instance to the private subnet and use NAT Gateway** The subject was covered within [5.1 AWS Basics](https://github.com/imakeeva1qa/devops_training/tree/main/5.1%20AWS%20Basics) task using terraform, so this part was skipped for now.
 
 ![](images/1-stack.png)
 
