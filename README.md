@@ -10,5 +10,5 @@ Repository for training
 7. [3.3 GitLab](3.3%20GitLab)
 8. [5.1 AWS Basics](5.1%20AWS%20Basics)
 9. [5.2 AWS Beanstalk](5.2%20AWS%20Beanstalk)
-10. [5.3] -
+10. [5.3 AWS Jenkins](5.3%20AWS%20Jenkins)
 11. [5.4 AWS Apache+PHP](5.4%20AWS%20Apache+PHP)
