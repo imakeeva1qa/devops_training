@@ -20,3 +20,5 @@ apt update
 apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
 usermod -aG docker ubuntu
+
+docker run -d hello-world
